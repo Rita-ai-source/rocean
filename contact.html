@@ -7,6 +7,14 @@
 <link rel="stylesheet" href="css/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Google Analytics (GA4) — Replace G-XXXXXXXXXX with your real Measurement ID after creating your GA property -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
 </head>
 <body>
 
@@ -49,7 +57,7 @@
             <div class="cd-icon"><i class="fas fa-map-marker-alt"></i></div>
             <div>
               <div class="cd-label">Address</div>
-              <div class="cd-value">Longhui Industrial Park, Fuyong Town Shenzhen City,Guangdong Province, China</div>
+              <div class="cd-value">Building 7, District 2, Xinxing Industrial Park, Xinhe, Fuyong Town, Bao'an, Shenzhen City, Guangdong Province, China</div>
             </div>
           </div>
           <div class="contact-detail">
@@ -86,7 +94,7 @@
       <!-- Contact Form -->
       <div class="contact-form-wrap fade-in">
         <h3>Request a Quote</h3>
-        <form id="contactForm">
+        <form id="contactForm" enctype="multipart/form-data">
           <div class="form-row">
             <div class="form-group">
               <label>First Name *</label>
@@ -141,6 +149,17 @@
             </select>
           </div>
           <div class="form-group">
+            <label>Attach Drawings / CAD Files (optional)</label>
+            <div class="file-upload-wrapper" style="position:relative;overflow:hidden;display:inline-block;width:100%;">
+              <button type="button" class="btn btn-primary" style="padding:10px 20px;font-size:14px;cursor:pointer;border:none;" onclick="document.getElementById('fileInput').click();">
+                <i class="fas fa-upload"></i> Choose Files
+              </button>
+              <span id="fileName" style="margin-left:12px;color:var(--gray);font-size:14px;">No file chosen</span>
+              <input type="file" id="fileInput" name="attachments[]" accept=".pdf,.step,.stp,.iges,.igs,.dwg,.dxf,.zip,.rar,.jpg,.png" multiple style="position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer;" onchange="document.getElementById('fileName').textContent=this.files.length>0?Array.from(this.files).map(f=>f.name).join(', '):'No file chosen'">
+            </div>
+            <small style="color:var(--gray);font-size:12px;display:block;margin-top:4px">Accepted: PDF, STEP, IGES, DWG, DXF, ZIP, RAR, JPG, PNG. Max 25MB per file.</small>
+          </div>
+          <div class="form-group">
             <label>Project Description *</label>
             <textarea placeholder="Describe your project, materials, tolerances, timeline, or any other relevant details..." required></textarea>
           </div>
@@ -178,10 +197,14 @@
     </div>
     <div class="footer-links"><h5>Services</h5><ul><li><a href="capabilities.html#injection">Plastic Injection Molding</a></li><li><a href="capabilities.html#mim">Metal Injection Molding</a></li><li><a href="capabilities.html#cnc">CNC Machining</a></li><li><a href="capabilities.html#tooling">Mold Tooling</a></li><li><a href="capabilities.html#proto">Rapid Prototyping</a></li><li><a href="capabilities.html#3dprint">3D Printing</a></li></ul></div>
     <div class="footer-links"><h5>Company</h5><ul><li><a href="about.html">About Us</a></li><li><a href="quality.html">Quality Control</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-    <div class="footer-contact"><h5>Contact</h5><div class="contact-item"><i class="fas fa-phone"></i><span>+86 134 2182 8607</span></div><div class="contact-item"><i class="fas fa-envelope"></i><span>info@Rocean-mfg.com</span></div></div>
+    <div class="footer-contact"><h5>Contact</h5><div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>Building 7, District 2, Xinxing Industrial Park, Xinhe, Fuyong Town, Bao'an, Shenzhen City, Guangdong Province, China</span></div><div class="contact-item"><i class="fas fa-phone"></i><span>+86 134 2182 8607</span></div><div class="contact-item"><i class="fas fa-envelope"></i><span>info@Rocean-mfg.com</span></div></div>
   </div>
   <div class="footer-bottom"><div class="container"><span>© 2024 Rocean. All rights reserved.</span></div></div>
 </footer>
+<!-- WhatsApp Floating Button -->
+<a href="https://api.whatsapp.com/send?phone=85296503946&text=Hello%2C%20I%27m%20interested%20in%20your%20manufacturing%20services%20and%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
 <script src="js/main.js"></script>
 </body>
 </html>
