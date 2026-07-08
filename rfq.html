@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Request a Quote — RC Precision</title>
+<meta name="description" content="Get a free, quoted DFM review from RC Precision in 48 hours. Injection molding, CNC, MIM, 3D printing and rapid tooling." />
+<style>
+  :root{
+    --ocean-deep:#0a2540;
+    --ocean-mid:#0077b6;
+    --ocean-bright:#00b4d8;
+    --ocean-light:#caf0f8;
+    --ink:#1a2b3c;
+    --muted:#5b6b7b;
+    --ok:#2a9d8f;
+    --line:#e3eaf0;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:#f6f9fc;
+    line-height:1.55;
+  }
+  header.site{
+    background:linear-gradient(135deg,var(--ocean-deep),var(--ocean-mid));
+    color:#fff;
+    padding:18px 24px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  header.site .logo{
+    font-weight:800;
+    letter-spacing:.5px;
+    font-size:20px;
+  }
+  header.site .logo span{color:var(--ocean-bright);}
+  header.site .tag{
+    font-size:13px;
+    opacity:.85;
+    margin-left:auto;
+  }
+  main{
+    max-width:1040px;
+    margin:32px auto;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:1.4fr .9fr;
+    gap:28px;
+    align-items:start;
+  }
+  .card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:0 10px 30px rgba(10,37,64,.06);
+    padding:28px;
+  }
+  h1{
+    margin:0 0 6px;
+    font-size:24px;
+    color:var(--ocean-deep);
+  }
+  .sub{
+    margin:0 0 22px;
+    color:var(--muted);
+    font-size:15px;
+  }
+  fieldset{
+    border:0;
+    padding:0;
+    margin:0 0 22px;
+  }
+  legend{
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:var(--ocean-mid);
+    margin-bottom:12px;
+  }
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  label .req{color:#e05656;}
+  input[type=text],input[type=email],input[type=tel],select,textarea{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-size:14px;
+    color:var(--ink);
+    background:#fff;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  input:focus,select:focus,textarea:focus{
+    outline:none;
+    border-color:var(--ocean-bright);
+    box-shadow:0 0 0 3px rgba(0,180,216,.18);
+  }
+  textarea{resize:vertical;min-height:90px;}
+  .checks{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px 14px;
+  }
+  .checks label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:500;
+    font-size:14px;
+    margin:0;
+  }
+  .checks input{width:auto;}
+  .consent{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13px;
+    color:var(--muted);
+    background:var(--ocean-light);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:16px;
+  }
+  .consent input{margin-top:3px;}
+  .consent a{color:var(--ocean-mid);}
+  button.submit{
+    width:100%;
+    border:0;
+    border-radius:10px;
+    padding:14px;
+    font-size:16px;
+    font-weight:700;
+    color:#fff;
+    background:linear-gradient(135deg,var(--ocean-mid),var(--ocean-bright));
+    cursor:pointer;
+    transition:transform .08s,filter .15s;
+  }
+  button.submit:hover{filter:brightness(1.05);}
+  button.submit:active{transform:translateY(1px);}
+  button.submit:disabled{opacity:.6;cursor:default;}
+  .aside{
+    background:linear-gradient(160deg,var(--ocean-deep),var(--ocean-mid));
+    color:#fff;
+    border-radius:var(--radius);
+    padding:26px 22px;
+  }
+  .aside h2{margin:0 0 14px;font-size:17px;}
+  .aside ul{margin:0;padding-left:18px;font-size:14px;opacity:.92;}
+  .aside li{margin-bottom:10px;}
+  .aside .stat{
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.18);
+    font-size:13px;
+    opacity:.85;
+  }
+  /* honeypot + visually hidden */
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  #success{
+    text-align:center;
+    padding:18px 6px;
+  }
+  #success .badge{
+    width:54px;height:54px;border-radius:50%;
+    background:var(--ok);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:28px;margin:0 auto 14px;
+  }
+  #success h2{color:var(--ocean-deep);margin:0 0 8px;}
+  #success p{color:var(--muted);margin:0;}
+  footer.note{
+    text-align:center;color:var(--muted);font-size:12px;
+    padding:0 20px 40px;
+  }
+  @media (max-width:760px){
+    main{grid-template-columns:1fr;}
+    .grid2,.checks{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="logo">RC<span>Precision</span></div>
+  <div class="tag">Injection Molding · CNC · MIM · 3D Printing</div>
+</header>
+
+<main>
+  <section class="card">
+    <h1>Get a quoted DFM review in 48 hours</h1>
+    <p class="sub">No commitment. Tell us about your project and we'll come back with a free design-for-manufacture assessment and a ballpark quote.</p>
+
+    <form id="rfqForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <!-- HONEYPOT: hidden from humans, bots fill it -> submission dropped -->
+      <div class="hp"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label></div>
+
+      <!-- UTM + attribution (auto-filled by script) -->
+      <input type="hidden" name="utm_source" id="utm_source" />
+      <input type="hidden" name="utm_medium" id="utm_medium" />
+      <input type="hidden" name="utm_campaign" id="utm_campaign" />
+      <input type="hidden" name="utm_term" id="utm_term" />
+      <input type="hidden" name="utm_content" id="utm_content" />
+      <input type="hidden" name="referrer" id="referrer" />
+
+      <fieldset>
+        <legend>1 · Contact</legend>
+        <div class="grid2">
+          <div>
+            <label for="name">Name <span class="req">*</span></label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div>
+            <label for="company">Company <span class="req">*</span></label>
+            <input type="text" id="company" name="company" required />
+          </div>
+          <div>
+            <label for="email">Business email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div>
+            <label for="phone">Phone / WhatsApp</label>
+            <input type="tel" id="phone" name="phone" />
+          </div>
+          <div>
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2 · Project</legend>
+        <div class="grid2">
+          <div>
+            <label for="industry">Industry <span class="req">*</span></label>
+            <select id="industry" name="industry" required>
+              <option value="">Select…</option>
+              <option>Automotive</option>
+              <option>Medical</option>
+              <option>Aerospace</option>
+              <option>Electronics</option>
+              <option>Industrial</option>
+              <option>Consumer product</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="volume">Est. annual volume <span class="req">*</span></label>
+            <select id="volume" name="volume" required>
+              <option value="">Select…</option>
+              <option>&lt; 1,000</option>
+              <option>1,000 – 10,000</option>
+              <option>10,000 – 100,000</option>
+              <option>&gt; 100,000</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label>Process needed <span class="req">*</span></label>
+          <div class="checks">
+            <label><input type="checkbox" name="process" value="Injection molding" /> Injection molding</label>
+            <label><input type="checkbox" name="process" value="CNC machining" /> CNC machining</label>
+            <label><input type="checkbox" name="process" value="MIM" /> MIM (metal injection)</label>
+            <label><input type="checkbox" name="process" value="3D printing" /> 3D printing</label>
+            <label><input type="checkbox" name="process" value="Tooling" /> Rapid tooling / mold</label>
+            <label><input type="checkbox" name="process" value="Prototype" /> Rapid prototype</label>
+          </div>
+        </div>
+
+        <div class="grid2" style="margin-top:14px;">
+          <div>
+            <label for="material">Material / grade</label>
+            <input type="text" id="material" name="material" placeholder="e.g. POM 100P, 17-4PH, Aluminum 6061" />
+          </div>
+          <div>
+            <label for="leadtime">Target lead time</label>
+            <input type="text" id="leadtime" name="leadtime" placeholder="e.g. 4 weeks, ASAP" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>3 · Drawings & details</legend>
+        <div>
+          <label for="drawing_link">Drawing / spec link (Google Drive, Dropbox…)</label>
+          <input type="text" id="drawing_link" name="drawing_link" placeholder="Paste a shareable link" />
+          <p style="font-size:12px;color:var(--muted);margin:6px 0 0;">
+            Tip: a shareable link works best on the free form tier. If you need a direct file upload, see the deploy guide (HubSpot option).
+          </p>
+        </div>
+        <div style="margin-top:14px;">
+          <label for="message">Anything else we should know?</label>
+          <textarea id="message" name="message" placeholder="Tolerance, surface finish, certs needed (ISO 13485, IATF 16949…), etc."></textarea>
+        </div>
+      </fieldset>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" name="marketing_consent" value="yes" />
+        <label for="consent" style="margin:0;font-weight:500;">
+          I agree to be contacted by RC Precision about my request, and to receive occasional manufacturing insights by email. You can unsubscribe anytime. See our <a href="/privacy.html">Privacy Policy</a>.
+        </label>
+      </div>
+
+      <button type="submit" class="submit">Request My Quote</button>
+    </form>
+
+    <div id="success" hidden>
+      <div class="badge">✓</div>
+      <h2>Thanks — we've got your request</h2>
+      <p>A free DFM review will land in your inbox within 48 hours. If it's urgent, reach us on WhatsApp at <strong>+852 9650 3946</strong>.</p>
+    </div>
+  </section>
+
+  <aside class="aside">
+    <h2>Why teams choose RC Precision</h2>
+    <ul>
+      <li><strong>48-hour DFM feedback</strong> — we review manufacturability before you pay a cent.</li>
+      <li><strong>One stop</strong> — molding, CNC, MIM, 3D printing and tooling under one roof.</li>
+      <li><strong>Certified</strong> — ISO 9001, with medical & automotive paths available.</li>
+      <li><strong>Global, fast</strong> — 1,200+ molds delivered to 30+ countries.</li>
+    </ul>
+    <div class="stat">Typical first-quote turnaround: <strong>2 business days</strong>.<br/>No-commitment DFM review on every RFQ.</div>
+  </aside>
+</main>
+
+<footer class="note">© RC Precision · Shenzhen, China · quote@rc-mfg.com · WhatsApp +852 9650 3946</footer>
+
+<script>
+(function(){
+  var params = new URLSearchParams(location.search);
+  ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k){
+    var v = params.get(k);
+    var el = document.getElementById(k);
+    if(v && el){ el.value = v; }
+  });
+  var ref = document.getElementById('referrer');
+  if(ref){ ref.value = document.referrer || ''; }
+
+  var form = document.getElementById('rfqForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = form.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    fetch(form.action, {
+      method:'POST',
+      body: new FormData(form),
+      headers: { 'Accept':'application/json' }
+    }).then(function(res){
+      if(res.ok){
+        form.style.display = 'none';
+        document.getElementById('success').hidden = false;
+        if(window.gtag){ gtag('event','generate_lead',{ event_category:'RFQ', event_label: params.get('utm_source')||'direct' }); }
+        if(window.fbq){ fbq('track','Lead'); }
+        return;
+      }
+      return res.json().then(function(data){
+        throw new Error(data.error || 'Submission failed');
+      });
+    }).then(function(){
+      // success handled above
+    }).catch(function(err){
+      alert((err && err.message) ? err.message + ' — or email quote@rc-mfg.com' : 'Network error. Please email quote@rc-mfg.com');
+      btn.disabled = false;
+      btn.textContent = 'Request My Quote';
+    });
+  });
+})();
+</script>
+</body>
+</html>
