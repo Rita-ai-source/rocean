@@ -182,7 +182,8 @@
     font-size:28px;margin:0 auto 14px;
   }
   #success h2{color:var(--ocean-deep);margin:0 0 8px;}
-  #success p{color:var(--muted);margin:0;}
+  #success p{color:var(--muted);margin:0 0 10px;}
+  #success a{color:var(--ocean-mid);font-weight:600;}
   footer.note{
     text-align:center;color:var(--muted);font-size:12px;
     padding:0 20px 40px;
@@ -204,7 +205,8 @@
     <h1>Get a quoted DFM review in 48 hours</h1>
     <p class="sub">No commitment. Tell us about your project and we'll come back with a free design-for-manufacture assessment and a ballpark quote.</p>
 
-    <form id="rfqForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <!-- MAILTO version: submit opens the visitor's email app pre-filled to info@rctooling.com (which forwards to you). No backend needed. -->
+    <form id="rfqForm">
       <!-- HONEYPOT: hidden from humans, bots fill it -> submission dropped -->
       <div class="hp"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label></div>
 
@@ -301,7 +303,7 @@
           <label for="drawing_link">Drawing / spec link (Google Drive, Dropbox…)</label>
           <input type="text" id="drawing_link" name="drawing_link" placeholder="Paste a shareable link" />
           <p style="font-size:12px;color:var(--muted);margin:6px 0 0;">
-            Tip: a shareable link works best on the free form tier. If you need a direct file upload, see the deploy guide (HubSpot option).
+            Tip: paste a shareable link to your drawings — the link is included in the email we receive.
           </p>
         </div>
         <div style="margin-top:14px;">
@@ -322,8 +324,9 @@
 
     <div id="success" hidden>
       <div class="badge">✓</div>
-      <h2>Thanks — we've got your request</h2>
-      <p>A free DFM review will land in your inbox within 48 hours. If it's urgent, reach us on WhatsApp at <strong>+852 9650 3946</strong>.</p>
+      <h2>Your email app should be open</h2>
+      <p>We've pre-filled your request in a new email to <strong>info@rctooling.com</strong>. Just press <strong>Send</strong> and a free DFM review will reach you within 48 hours.</p>
+      <p>If your email app didn't open, email us directly at <a href="mailto:info@rctooling.com">info@rctooling.com</a> or WhatsApp <strong>+852 9650 3946</strong>.</p>
     </div>
   </section>
 
@@ -355,31 +358,65 @@
   var form = document.getElementById('rfqForm');
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    var btn = form.querySelector('button[type=submit]');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-    fetch(form.action, {
-      method:'POST',
-      body: new FormData(form),
-      headers: { 'Accept':'application/json' }
-    }).then(function(res){
-      if(res.ok){
-        form.style.display = 'none';
-        document.getElementById('success').hidden = false;
-        if(window.gtag){ gtag('event','generate_lead',{ event_category:'RFQ', event_label: params.get('utm_source')||'direct' }); }
-        if(window.fbq){ fbq('track','Lead'); }
-        return;
-      }
-      return res.json().then(function(data){
-        throw new Error(data.error || 'Submission failed');
-      });
-    }).then(function(){
-      // success handled above
-    }).catch(function(err){
-      alert((err && err.message) ? err.message + ' — or email quote@rctooling.com' : 'Network error. Please email quote@rctooling.com');
-      btn.disabled = false;
-      btn.textContent = 'Request My Quote';
-    });
+
+    // honeypot: silently drop bot submissions
+    var gotcha = form.querySelector('[name=_gotcha]');
+    if(gotcha && gotcha.value){ return; }
+
+    var get = function(n){
+      var el = form.querySelector('[name="'+n+'"]');
+      return el ? el.value.trim() : '';
+    };
+    var name = get('name'), company = get('company'), email = get('email'),
+        phone = get('phone'), country = get('country'),
+        industry = get('industry'), volume = get('volume'),
+        material = get('material'), leadtime = get('leadtime'),
+        drawing = get('drawing_link'), message = get('message');
+    var consent = form.querySelector('[name=marketing_consent]').checked ? 'Yes' : 'No';
+    var processes = Array.prototype.map.call(
+      form.querySelectorAll('[name=process]:checked'),
+      function(c){ return c.value; }
+    ).join(', ');
+    var utm = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].map(function(k){
+      return k + '=' + get(k);
+    }).join('  ');
+    var referrer = document.getElementById('referrer').value;
+
+    var body = '';
+    body += 'New RFQ from ' + (name || '?') + (company ? ' — ' + company : '') + '\n';
+    body += '----------------------------------------\n\n';
+    body += 'CONTACT\n';
+    body += 'Name: ' + name + '\n';
+    body += 'Company: ' + company + '\n';
+    body += 'Email: ' + email + '\n';
+    body += 'Phone / WhatsApp: ' + phone + '\n';
+    body += 'Country: ' + country + '\n\n';
+    body += 'PROJECT\n';
+    body += 'Industry: ' + industry + '\n';
+    body += 'Est. annual volume: ' + volume + '\n';
+    body += 'Process needed: ' + (processes || '(not specified)') + '\n';
+    body += 'Material / grade: ' + material + '\n';
+    body += 'Target lead time: ' + leadtime + '\n\n';
+    body += 'DRAWINGS / LINK\n' + (drawing || '(none)') + '\n\n';
+    body += 'DETAILS\n' + (message || '(none)') + '\n\n';
+    body += 'Marketing consent: ' + consent + '\n';
+    body += 'Attribution: ' + utm + '\n';
+    body += 'Referrer: ' + referrer + '\n';
+
+    var subject = 'New RFQ — ' + (company || name || 'Website');
+    if(processes){ subject += ' — ' + processes; }
+
+    var mailto = 'mailto:info@rctooling.com?subject=' +
+      encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
+    // open visitor's email client
+    window.location.href = mailto;
+
+    // show guidance
+    form.style.display = 'none';
+    document.getElementById('success').hidden = false;
+
+    if(window.gtag){ gtag('event','generate_lead',{ event_category:'RFQ', event_label:'mailto' }); }
   });
 })();
 </script>
