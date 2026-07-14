@@ -289,7 +289,7 @@ ul { list-style: none; }
 
 .about-team { background: var(--white); }
 .team-intro { max-width: 700px; margin: 0 auto 60px; text-align: center; }
-.team-img-full { width: 100%; border-radius: var(--radius-lg); height: 400px; object-fit: cover; }
+.team-img-full { width: auto; max-width: 100%; max-height: 500px; height: auto; border-radius: var(--radius-lg); display: block; margin: 0 auto; }
 
 .about-numbers { background: var(--primary); color: white; padding: 80px 0; }
 .numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
