@@ -400,8 +400,13 @@
     body += 'DRAWINGS / LINK\n' + (drawing || '(none)') + '\n\n';
     body += 'DETAILS\n' + (message || '(none)') + '\n\n';
     body += 'Marketing consent: ' + consent + '\n';
-    body += 'Attribution: ' + utm + '\n';
-    body += 'Referrer: ' + referrer + '\n';
+    // Only show tracking section if there's actual UTM or referrer data
+    var hasUTM = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].some(function(k){ return get(k); });
+    if(hasUTM || referrer){
+      body += '\n--- Internal tracking (no need to reply) ---\n';
+      if(hasUTM){ body += 'Attribution: ' + utm + '\n'; }
+      if(referrer){ body += 'Referrer: ' + referrer + '\n'; }
+    }
 
     var subject = 'New RFQ — ' + (company || name || 'Website');
     if(processes){ subject += ' — ' + processes; }
