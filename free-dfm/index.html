@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RC Precision — Factory-Direct Tooling for Procurement Teams</title>
+  <style>
+    :root {
+      --navy: #1f3a5f;
+      --navy-dark: #16293f;
+      --accent: #f5821f;
+      --accent-dark: #d96e0c;
+      --bg-alt: #f5f7fa;
+      --text: #1a1a1a;
+      --muted: #5b6b7b;
+      --border: #e2e8f0;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--white);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 6px;
+      transition: background .2s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .btn:hover { background: var(--accent-dark); }
+    .btn-secondary {
+      display: inline-block;
+      border: 2px solid var(--navy);
+      color: var(--navy);
+      font-weight: 600;
+      padding: 12px 26px;
+      border-radius: 6px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .btn-secondary:hover { background: var(--navy); color: var(--white); }
+
+    /* Header */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { font-weight: 800; font-size: 20px; color: var(--navy); letter-spacing: .5px; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { color: var(--muted); font-weight: 500; font-size: 15px; }
+    .nav-links a:hover { color: var(--navy); }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+      color: var(--white);
+      padding: 80px 0 90px;
+    }
+    .hero h1 { font-size: 44px; line-height: 1.15; font-weight: 800; max-width: 780px; }
+    .hero p.sub { font-size: 19px; color: #cdd9e6; margin: 22px 0 34px; max-width: 680px; }
+    .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+    .hero .btn-secondary { border-color: rgba(255,255,255,.5); color: var(--white); }
+    .hero .btn-secondary:hover { background: rgba(255,255,255,.12); color: var(--white); }
+    .trust-bar { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 42px; font-size: 14px; color: #aebfd1; }
+    .trust-bar span { display: inline-flex; align-items: center; gap: 8px; }
+    .trust-bar b { color: var(--white); font-weight: 600; }
+
+    /* Value pillars */
+    .pillars { padding: 72px 0; }
+    .section-head { text-align: center; margin-bottom: 48px; }
+    .section-head h2 { font-size: 32px; color: var(--navy); font-weight: 800; }
+    .section-head p { color: var(--muted); margin-top: 10px; font-size: 17px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px 28px;
+      background: var(--white);
+      transition: box-shadow .2s ease, transform .2s ease;
+    }
+    .card:hover { box-shadow: 0 12px 30px rgba(31,58,95,.10); transform: translateY(-3px); }
+    .card .icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: var(--bg-alt); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; color: var(--accent);
+    }
+    .card h3 { color: var(--navy); font-size: 20px; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: 15px; }
+
+    /* Social proof */
+    .proof { background: var(--bg-alt); padding: 72px 0; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 48px; }
+    .stat { text-align: center; }
+    .stat .num { font-size: 38px; font-weight: 800; color: var(--accent); }
+    .stat .label { color: var(--muted); font-size: 15px; margin-top: 6px; }
+    .testimonial {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 32px; max-width: 760px; margin: 0 auto; text-align: center;
+    }
+    .testimonial blockquote { font-size: 19px; color: var(--navy); font-style: italic; }
+    .testimonial cite { display: block; margin-top: 16px; color: var(--muted); font-style: normal; font-size: 14px; }
+    .report {
+      margin: 36px auto 0; max-width: 420px; border: 1px dashed var(--border);
+      border-radius: 10px; padding: 22px; text-align: center; color: var(--muted); font-size: 14px;
+      background: var(--white);
+    }
+
+    /* Lead magnet */
+    .lead { padding: 76px 0; background: var(--navy); color: var(--white); }
+    .lead-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+    .lead h2 { font-size: 32px; font-weight: 800; }
+    .lead p.desc { color: #cdd9e6; margin: 16px 0 22px; font-size: 17px; }
+    .lead ul { list-style: none; }
+    .lead ul li { padding: 8px 0 8px 28px; position: relative; color: #e4ecf4; }
+    .lead ul li:before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 800; }
+    .form-box {
+      background: var(--white); border-radius: 12px; padding: 32px; color: var(--text);
+    }
+    .form-box h3 { color: var(--navy); font-size: 20px; margin-bottom: 6px; }
+    .form-box p.note { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+    .field input, .field textarea {
+      width: 100%; padding: 11px 12px; border: 1px solid var(--border); border-radius: 6px;
+      font-size: 14px; font-family: inherit; color: var(--text);
+    }
+    .field textarea { resize: vertical; min-height: 70px; }
+    .form-box .btn { width: 100%; text-align: center; margin-top: 6px; }
+    .micro { font-size: 12px; color: var(--muted); margin-top: 12px; text-align: center; }
+    .success {
+      display: none; background: #e8f6ee; border: 1px solid #b6e2c6; color: #1b6b3a;
+      border-radius: 8px; padding: 18px; text-align: center; font-weight: 600;
+    }
+
+    /* Footer */
+    footer { background: var(--navy-dark); color: #aebfd1; padding: 56px 0 32px; }
+    .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
+    footer h4 { color: var(--white); font-size: 15px; margin-bottom: 14px; }
+    footer a { color: #aebfd1; font-size: 14px; display: block; padding: 4px 0; }
+    footer a:hover { color: var(--white); }
+    .foot-cta { background: rgba(255,255,255,.06); border-radius: 10px; padding: 24px; }
+    .foot-cta p { font-size: 14px; margin-bottom: 14px; }
+    .foot-bottom { text-align: center; margin-top: 36px; font-size: 13px; color: #7e90a4; border-top: 1px solid rgba(255,255,255,.08); padding-top: 20px; }
+
+    @media (max-width: 860px) {
+      .grid-3, .stats, .lead-grid, .foot-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 32px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="logo">RC<span> Precision</span></div>
+      <nav class="nav-links">
+        <a href="#capabilities">Capabilities</a>
+        <a href="#proof">Quality</a>
+        <a href="#lead">Free DFM</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a href="#lead" class="btn-secondary">Get a Quote</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Factory-Direct Tooling for Procurement Teams Who Can't Afford a Slow Supplier</h1>
+      <p class="sub">Injection molds, MIM &amp; CNC machining — Low MOQ, DFM in 48 hours, qualified and on your dock on schedule.</p>
+      <div class="hero-cta">
+        <a href="#lead" class="btn">Get My Free DFM + Ballpark Quote</a>
+        <a href="#capabilities" class="btn-secondary">See Our Capabilities</a>
+      </div>
+      <div class="trust-bar">
+        <span>🏅 <b>ISO-Certified</b> Quality System</span>
+        <span>🎯 <b>±0.005mm</b> Tolerance</span>
+        <span>🚚 <b>On-Time</b> Delivery</span>
+        <span>📡 <b>Real-Time</b> Schedule Tracking</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value pillars -->
+  <section class="pillars" id="capabilities">
+    <div class="container">
+      <div class="section-head">
+        <h2>Why Procurement Teams Switch to RC Precision</h2>
+        <p>Three things we never trade off — speed, control, and certainty.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+          </div>
+          <h3>Speed</h3>
+          <p>DFM in 48 hours, with a live production schedule your team can track from RFQ to shipment.</p>
+        </div>
+        <div class="card">
+          <div class="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>
+          </div>
+          <h3>Control</h3>
+          <p>Low-MOQ customization, factory-direct pricing, and no middlemen between your spec and our shop floor.</p>
+        </div>
+        <div class="card">
+          <div class="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <h3>Certainty</h3>
+          <p>In-process + first-article CMM inspection, material certificates, and on-time shipment — documented.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social proof -->
+  <section class="proof" id="proof">
+    <div class="container">
+      <div class="section-head">
+        <h2>Proof, Not Promises</h2>
+        <p>Numbers and documents your QA team can actually verify.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">31 days</div><div class="label">Medical-grade 2-cavity mold, delivered</div></div>
+        <div class="stat"><div class="num">±0.005mm</div><div class="label">Achievable on 5-axis CNC centers</div></div>
+        <div class="stat"><div class="num">20+ countries</div><div class="label">Molds &amp; precision parts shipped</div></div>
+      </div>
+      <div class="testimonial">
+        <blockquote>"RC Precision cut our tooling lead time by 40%, and the first article passed on T1 — no rework loop."</blockquote>
+        <cite>— Procurement Lead, European automotive supplier</cite>
+      </div>
+      <div class="report">
+        📄 Sample: First-Article CMM Report (dimensional data + material cert) travels with every shipment.
+      </div>
+    </div>
+  </section>
+
+  <!-- Lead magnet -->
+  <section class="lead" id="lead">
+    <div class="container lead-grid">
+      <div>
+        <h2>Free Design-for-Manufacture (DFM) Assessment + Ballpark Quote</h2>
+        <p class="desc">Send us your part or project brief. Our engineers review it and reply with a DFM improvement note and a ballpark price range — within 48 hours.</p>
+        <ul>
+          <li>Zero cost, zero commitment</li>
+          <li>A real second opinion on your design</li>
+          <li>Ballpark range you can benchmark against current suppliers</li>
+        </ul>
+      </div>
+      <div class="form-box">
+        <h3>Get Your Free DFM</h3>
+        <p class="note">Takes 60 seconds. We reply within 48 hours.</p>
+        <!-- Mailchimp 直连（免费版兼容）：把 us12 / 8b80c1e5ee5bfab7b6ce8530bd2 / edbbfc57a6 换成你的列表地址
+             （Audience → Signup forms → Embedded forms 页面顶部的 action URL 里能看到）。
+             免费版限制：只能自动发第1封欢迎邮件；第2-5封请按 manual-followup-tracker.csv 手动发。
+             若要用 Company / Brief 字段，请先在 Mailchimp 建同名 merge 字段（COMPANY、BRIEF）。 -->
+        <iframe name="dfm-hidden" id="dfm-hidden" style="display:none;" title="hidden"></iframe>
+        <form id="dfm-form" action="https://us12.list-manage.com/subscribe/post?u=8b80c1e5ee5bfab7b6ce8530bd2&amp;id=edbbfc57a6&amp;f_id=00b3eaae0f0" method="POST" target="dfm-hidden" rel="noopener">
+          <input type="hidden" name="u" value="8b80c1e5ee5bfab7b6ce8530bd2" />
+          <input type="hidden" name="id" value="edbbfc57a6" />
+          <input type="hidden" name="f_id" value="00b3eaae0f0" />
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="FNAME" placeholder="John Doe" required />
+          </div>
+          <div class="field">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="COMPANY" placeholder="Acme Manufacturing" required />
+          </div>
+          <div class="field">
+            <label for="email">Work Email</label>
+            <input type="email" id="email" name="EMAIL" placeholder="john@acme.com" required />
+          </div>
+          <div class="field">
+            <label for="brief">Part / Project Brief (optional)</label>
+            <textarea id="brief" name="BRIEF" placeholder="Material, tolerance, volume, target timeline..."></textarea>
+          </div>
+          <button type="submit" class="btn">Get My Free DFM →</button>
+          <p class="micro">No spam. We'll review your part and reply with a DFM note + ballpark range within 48 hours.</p>
+        </form>
+        <div class="success" id="dfm-success">✅ Thanks! Your request is in. We'll reply within 48 hours.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <div class="logo" style="color:#fff">RC<span style="color:var(--accent)"> Precision</span></div>
+          <p style="margin-top:12px; font-size:14px; max-width:320px;">Precision injection molds, MIM, and CNC machining — from prototype to high-volume production.</p>
+        </div>
+        <div>
+          <h4>Capabilities</h4>
+          <a href="https://www.rctooling.com/capabilities.html#injection">Injection Molding</a>
+          <a href="https://www.rctooling.com/capabilities.html#cnc">CNC Machining</a>
+          <a href="https://www.rctooling.com/capabilities.html#mim">Metal Injection Molding</a>
+          <a href="https://www.rctooling.com/quality.html">Quality Control</a>
+        </div>
+        <div class="foot-cta">
+          <h4 style="color:#fff;">Talk to a Mold Engineer</h4>
+          <p>Have a program on the radar? Let's review it together.</p>
+          <a href="https://wa.me/85296503946" class="btn">Chat on WhatsApp</a>
+        </div>
+      </div>
+      <div class="foot-bottom">© 2026 RC Precision · Factory-Direct Tooling · ISO-Certified Quality System</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('dfm-form').addEventListener('submit', function () {
+      // Mailchimp raw POST：表单提交到隐藏 iframe，本页不跳转；这里只做成功提示。
+      // 注意：不要调用 e.preventDefault()，否则数据不会发给 Mailchimp。
+      this.style.display = 'none';
+      document.getElementById('dfm-success').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
