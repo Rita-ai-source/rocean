@@ -96,8 +96,16 @@
       <!-- Contact Form -->
       <div class="contact-form-wrap fade-in" data-page-node-id="yOA5HeRZ46ozbNcIvNQimu">
         <h3 data-page-node-id="shoZcEIrxG37sCNfVnNKeJ">Send Us a Message</h3>
-                <!-- MAILTO version: submit opens the visitor's email app pre-filled to info@rctooling.com. No backend needed. -->
-        <form id="contactForm" data-page-node-id="kOMITQrO6nEZvh8Os0LEzg">
+                <iframe name="mc-hidden-contact" id="mc-hidden-contact" style="display:none" title="hidden"></iframe>
+        <form id="contactForm" action="https://rctooling.us12.list-manage.com/subscribe/post?u=b80c1e5ee5bfab76ce8530bd2&amp;id=edbbfc57a6" method="POST" target="mc-hidden-contact" data-page-node-id="kOMITQrO6nEZvh8Os0LEzg">
+          <!-- honeypot: bots fill this, humans never see it -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <!-- Mailchimp direct-submit fields (same audience as free-DFM) -->
+          <input type="hidden" name="FNAME" id="mc_fname" />
+          <input type="hidden" name="LNAME" id="mc_lname" />
+          <input type="hidden" name="EMAIL" id="mc_email" />
+          <input type="hidden" name="COMPANY" id="mc_company" />
+          <input type="hidden" name="BRIEF" id="mc_brief" />
           <div class="form-row" data-page-node-id="4UIVAebLSbWxTVAfoF538d">
             <div class="form-group" data-page-node-id="J3NUc3UIlnPH3WHX7ZZMa7">
               <label data-page-node-id="PJRENbS06y2Ncf5tm5Gss9">First Name *</label>
@@ -216,60 +224,30 @@
 
 <script>
 (function(){
-  // >>> Formspree endpoint - replace XXXXXXXX with your Formspree form ID
-  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/XXXXXXXX';
-  var FORMSPREE_READY = FORMSPREE_ENDPOINT.indexOf('XXXXXXXX') === -1;
+  // Mailchimp direct submit (same audience as the free-DFM form).
   var form = document.getElementById('contactForm');
   if(!form) return;
-  if(FORMSPREE_READY){ form.setAttribute('action', FORMSPREE_ENDPOINT); }
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    var hp = form.querySelector('[name=_gotcha]');
+    if(hp && hp.value){ return; } // honeypot: silently drop bots
+    if(!form.checkValidity()){ form.reportValidity(); return; }
     var g = function(id){ var el=document.getElementById(id); return el?el.value.trim():''; };
     var first=g('cf_first'), last=g('cf_last'), company=g('cf_company'),
         email=g('cf_email'), phone=g('cf_phone'), service=g('cf_service'),
         volume=g('cf_volume'), link=g('cf_link'), message=g('cf_message');
-    var name = (first+' '+last).trim();
-    var subject = 'New Inquiry — ' + (company || name || 'Website');
-    if(service){ subject += ' — ' + service; }
-    var body = '';
-    body += 'New inquiry from ' + (name || '?') + (company ? ' — ' + company : '') + '\n';
-    body += '----------------------------------------\n\n';
-    body += 'CONTACT\n';
-    body += 'Name: ' + name + '\n';
-    body += 'Company: ' + company + '\n';
-    body += 'Email: ' + email + '\n';
-    body += 'Phone: ' + phone + '\n\n';
-    body += 'PROJECT\n';
-    body += 'Service needed: ' + service + '\n';
-    body += 'Est. annual volume: ' + volume + '\n';
-    body += 'Drawing / spec link: ' + (link || '(none)') + '\n\n';
-    body += 'DESCRIPTION\n' + (message || '(none)') + '\n';
-    // Fallback: if Formspree is not configured yet, fall back to the visitor's email client
-    if(!FORMSPREE_READY){
-      window.location.href = 'mailto:info@rctooling.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      return;
-    }
-    var btn = form.querySelector('button[type="submit"]');
-    var btnText = btn ? btn.textContent : '';
-    if(btn){ btn.disabled = true; btn.textContent = 'Sending...'; }
-    var payload = new FormData();
-    payload.append('email', email);
-    payload.append('name', name);
-    payload.append('company', company);
-    payload.append('phone', phone);
-    payload.append('service', service);
-    payload.append('_subject', subject);
-    payload.append('message', body);
-    fetch(FORMSPREE_ENDPOINT, { method:'POST', body:payload, headers:{'Accept':'application/json'} })
-      .then(function(r){ if(r.ok){ window.location.href = 'thank-you.html'; } else { throw new Error('bad'); } })
-      .catch(function(){
-        if(btn){ btn.disabled = false; btn.textContent = btnText; }
-        alert('Sorry - the form could not be sent. Please email us directly at info@rctooling.com');
-      });
+    var brief = ('Service: ' + (service||'?') + ' | Volume: ' + (volume||'?') + ' | Phone: ' + (phone||'-') + (link ? ' | Drawings: ' + link : '') + ' | ' + (message||'')).slice(0,250);
+    var setMC = function(id,v){ var el=document.getElementById(id); if(el){ el.value=v; } };
+    setMC('mc_fname', first);
+    setMC('mc_lname', last);
+    setMC('mc_email', email);
+    setMC('mc_company', company);
+    setMC('mc_brief', brief);
+    form.submit(); // native POST to hidden iframe
     form.style.display = 'none';
     var ok = document.getElementById('cfSuccess');
     if(ok){ ok.hidden = false; }
-    if(window.gtag){ gtag('event','generate_lead',{ event_category:'Contact', event_label:'mailto' }); }
+    if(window.gtag){ gtag('event','generate_lead',{ event_category:'Contact', event_label:'mailchimp' }); }
   });
 })();
 </script>
