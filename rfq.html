@@ -208,7 +208,8 @@
     <p class="sub" data-page-node-id="zO4Q6OCFoZJrKNfML6k46y">No commitment. Tell us about your project and we'll come back with a free design-for-manufacture assessment and a ballpark quote.</p>
 
     <!-- MAILTO version: submit opens the visitor's email app pre-filled to info@rctooling.com (which forwards to you). No backend needed. -->
-    <form id="rfqForm" data-page-node-id="MdbA9dqTBFrDhsFGPAWVU9">
+    <iframe name="mc-hidden-rfq" id="mc-hidden-rfq" style="display:none" title="hidden"></iframe>
+    <form id="rfqForm" action="https://rctooling.us12.list-manage.com/subscribe/post?u=b80c1e5ee5bfab76ce8530bd2&amp;id=edbbfc57a6" method="POST" target="mc-hidden-rfq" data-page-node-id="MdbA9dqTBFrDhsFGPAWVU9">
       <!-- HONEYPOT: hidden from humans, bots fill it -> submission dropped -->
       <div class="hp" data-page-node-id="Q0BWjtXNt1MO23G6AHBYqg"><label data-page-node-id="WLzGhUf97C1Efx7Qn2ubiu">Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" data-page-node-id="cxOD1dEivWKrk0UHhKLURw" /></label></div>
 
@@ -219,6 +220,13 @@
       <input type="hidden" name="utm_term" id="utm_term" data-page-node-id="OVYe0zvSAYNFKAYyOU1Iso" />
       <input type="hidden" name="utm_content" id="utm_content" data-page-node-id="Ch5SMR9VkbLOtZWtH7mc3J" />
       <input type="hidden" name="referrer" id="referrer" data-page-node-id="DKSCM0ki26NBm5p9glmXRX" />
+
+      <!-- Mailchimp direct-submit fields (same audience as free-DFM): contact info lands in the list, details condensed into BRIEF -->
+      <input type="hidden" name="FNAME" id="mc_fname" />
+      <input type="hidden" name="LNAME" id="mc_lname" />
+      <input type="hidden" name="EMAIL" id="mc_email" />
+      <input type="hidden" name="COMPANY" id="mc_company" />
+      <input type="hidden" name="BRIEF" id="mc_brief" />
 
       <fieldset data-page-node-id="75jcylbzbjtznjXt9EtrAs">
         <legend data-page-node-id="d8QRmGxOLwISVhlALlay2E">1 · Contact</legend>
@@ -350,22 +358,19 @@
 
 <script>
 (function(){
-  // >>> Formspree endpoint - replace XXXXXXXX with your Formspree form ID
-  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/XXXXXXXX';
-  var FORMSPREE_READY = FORMSPREE_ENDPOINT.indexOf('XXXXXXXX') === -1;
-  var params = new URLSearchParams(location.search);
-  ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k){
-    var v = params.get(k);
-    var el = document.getElementById(k);
-    if(v && el){ el.value = v; }
-  });
-  var ref = document.getElementById('referrer');
-  if(ref){ ref.value = document.referrer || ''; }
-
   var form = document.getElementById('rfqForm');
-  if(FORMSPREE_READY){ form.setAttribute('action', FORMSPREE_ENDPOINT); }
   form.addEventListener('submit', function(e){
     e.preventDefault();
+
+    // Re-fill UTM attribution (kept from previous logic)
+    var params = new URLSearchParams(location.search);
+    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k){
+      var v = params.get(k);
+      var el = document.getElementById(k);
+      if(v && el){ el.value = v; }
+    });
+    var ref = document.getElementById('referrer');
+    if(ref){ ref.value = document.referrer || ''; }
 
     // honeypot: silently drop bot submissions
     var gotcha = form.querySelector('[name=_gotcha]');
@@ -414,35 +419,22 @@
     var subject = 'New RFQ — ' + (company || name || 'Website');
     if(processes){ subject += ' — ' + processes; }
 
-    // Fallback: if Formspree is not configured yet, fall back to the visitor's email client
-    if(!FORMSPREE_READY){
-      window.location.href = 'mailto:info@rctooling.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      return;
-    }
-    var btn = form.querySelector('button[type="submit"]');
-    var btnText = btn ? btn.textContent : '';
-    if(btn){ btn.disabled = true; btn.textContent = 'Sending...'; }
-    var payload = new FormData();
-    payload.append('email', email);
-    payload.append('name', name);
-    payload.append('company', company);
-    payload.append('phone', phone);
-    payload.append('country', country);
-    payload.append('process', processes);
-    payload.append('_subject', subject);
-    payload.append('message', body);
-    fetch(FORMSPREE_ENDPOINT, { method:'POST', body:payload, headers:{'Accept':'application/json'} })
-      .then(function(r){ if(r.ok){ window.location.href = 'thank-you.html'; } else { throw new Error('bad'); } })
-      .catch(function(){
-        if(btn){ btn.disabled = false; btn.textContent = btnText; }
-        alert('Sorry - the form could not be sent. Please email us directly at info@rctooling.com');
-      });
+    // Mailchimp direct submit: contact info lands in the audience,
+    // project details are condensed into the BRIEF field (255-char limit).
+    var brief = ('Industry: ' + (industry||'?') + ' | Volume: ' + (volume||'?') + ' | Process: ' + (processes||'?') + ' | Material: ' + (material||'-') + ' | Lead time: ' + (leadtime||'-') + ' | Phone: ' + (phone||'-') + ' | Country: ' + (country||'-') + (drawing ? ' | Drawings: ' + drawing : '') + ' | ' + (message||'')).slice(0,250);
+    var setMC = function(id,v){ var el=document.getElementById(id); if(el){ el.value=v; } };
+    setMC('mc_fname', (name||'').split(' ')[0] || '');
+    setMC('mc_lname', (name||'').split(' ').slice(1).join(' '));
+    setMC('mc_email', email);
+    setMC('mc_company', company);
+    setMC('mc_brief', brief);
+    form.submit(); // native POST to hidden iframe
 
     // show guidance
     form.style.display = 'none';
     document.getElementById('success').hidden = false;
 
-    if(window.gtag){ gtag('event','generate_lead',{ event_category:'RFQ', event_label:'mailto' }); }
+    if(window.gtag){ gtag('event','generate_lead',{ event_category:'RFQ', event_label:'mailchimp' }); }
   });
 })();
 </script>
