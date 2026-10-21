@@ -102,49 +102,50 @@ ul { list-style: none; }
 .hamburger span { display: block; width: 22px; height: 2px; background: white; border-radius: 2px; transition: .3s; }
 
 /* --- Hero --- */
-/* 16:9 与 hero 原图同比例：object-fit:cover 不产生任何裁切，
-   100% 缩放下即可看到整张拼贴图的全部内容 */
+/* 左右分栏：左侧纯白承载文案（固定 600px 视觉宽度），右侧完整展示拼贴图。
+   图片用 object-fit:contain → 永不裁切，且图片自带白底，四周"留白"与画布同色，
+   看不出边界。不再使用渐变遮罩，因此左侧图内容不会被冲淡。 */
 .hero {
-  position: relative; aspect-ratio: 16 / 9; display: flex;
-  align-items: center; overflow: hidden; background: var(--white);
+  position: relative; display: grid;
+  grid-template-columns: 1fr 1fr; align-items: center;
+  background: var(--white); padding: 96px 0 56px; overflow: hidden;
 }
-.hero-bg { position: absolute; inset: 0; }
-.hero-img { width: 100%; height: 100%; object-fit: cover; }
-.hero-overlay {
-  position: absolute; inset: 0;
-  /* 白色渐变：左侧留白承载文字，右侧渐隐露出拼贴图（与白底图片无缝衔接） */
-  background: linear-gradient(100deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.97) 34%, rgba(255,255,255,.90) 48%, rgba(255,255,255,.62) 58%, rgba(255,255,255,.18) 70%, rgba(255,255,255,0) 80%);
+.hero-bg {
+  position: relative; grid-column: 2; grid-row: 1;
+  align-self: center; display: flex; align-items: center;
+  padding-right: 24px;
 }
-.hero-content { position: relative; z-index: 2; padding-top: 80px; max-width: 700px; }
+.hero-img { width: 100%; height: 100%; max-height: 76vh; object-fit: contain; object-position: right center; }
+.hero-overlay { display: none; }
+.hero-content {
+  grid-column: 1; grid-row: 1; position: relative; z-index: 2;
+  width: 100%; max-width: none; margin: 0;
+  padding-left: calc(max((100vw - 1280px) / 2, 0px) + 40px);
+  padding-right: 32px;
+}
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(0,87,184,.08); border: 1px solid rgba(0,87,184,.28);
   color: var(--primary); font-size: 12px; font-weight: 700; letter-spacing: 2px;
-  padding: 8px 18px; border-radius: 30px; margin-bottom: 28px;
+  padding: 7px 16px; border-radius: 30px; margin-bottom: 22px;
 }
 .hero-title {
-  font-family: var(--font-head); font-size: clamp(40px, 5.5vw, 72px);
-  font-weight: 900; color: var(--dark); line-height: 1.1; margin-bottom: 24px;
+  font-family: var(--font-head); font-size: clamp(32px, 3vw, 52px);
+  font-weight: 900; color: var(--dark); line-height: 1.12; margin-bottom: 20px;
 }
 .hero-title .accent { color: var(--accent); }
-.hero-desc { font-size: 18px; color: var(--gray); line-height: 1.7; margin-bottom: 40px; max-width: 560px; }
+.hero-desc { font-size: 17px; color: var(--gray); line-height: 1.65; margin-bottom: 32px; max-width: 540px; }
 /* 白底 hero 专用：描边按钮改为深色描边（不影响其他页面的 .btn-outline） */
 .hero .btn-outline { border-color: rgba(15,25,35,.35); color: var(--dark); background: transparent; backdrop-filter: none; }
 .hero .btn-outline:hover { background: var(--dark); border-color: var(--dark); color: var(--white); }
-.hero-actions { display: flex; gap: 16px; margin-bottom: 64px; flex-wrap: wrap; }
-.hero-stats { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
-.stat-num { display: block; font-family: var(--font-head); font-size: 36px; font-weight: 900; color: var(--dark); line-height: 1; }
-.stat-num small { font-size: 18px; }
-.stat-label { display: block; font-size: 12px; font-weight: 500; color: var(--gray-light); letter-spacing: .5px; margin-top: 4px; }
-.stat-divider { width: 1px; height: 50px; background: rgba(15,25,35,.12); }
-.hero-scroll {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: rgba(15,25,35,.45); font-size: 11px; letter-spacing: 2px;
-  animation: bounce 2s infinite;
-}
-.hero-scroll i { font-size: 14px; }
-@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+.hero-actions { display: flex; gap: 14px; margin-bottom: 40px; flex-wrap: wrap; }
+.hero-stats { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.stat-num { display: block; font-family: var(--font-head); font-size: 30px; font-weight: 900; color: var(--dark); line-height: 1; }
+.stat-num small { font-size: 16px; }
+.stat-label { display: block; font-size: 11px; font-weight: 500; color: var(--gray-light); letter-spacing: .3px; margin-top: 4px; }
+.stat-divider { width: 1px; height: 44px; background: rgba(15,25,35,.12); }
+/* 分栏布局下不再需要滚动提示 */
+.hero-scroll { display: none !important; }
 
 /* --- Services Overview --- */
 .services-overview { background: var(--bg); }
@@ -387,10 +388,16 @@ ul { list-style: none; }
 /* =============================================
    RESPONSIVE
    ============================================= */
-/* 1280px 以下 16:9 已装不下文字，改用整屏高度（此时图片会按 cover 轻微裁切，
-   窄屏/手机无法避免；桌面 1280px 以上始终零裁切） */
-@media (max-width: 1280px) {
-  .hero { aspect-ratio: auto; min-height: 100vh; }
+/* 平板及以下：改为上下堆叠，图片移到文案下方，仍然完整显示不裁切 */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; row-gap: 32px; padding: 96px 0 48px; }
+  .hero-content { grid-column: 1; grid-row: 1; padding-left: 40px; padding-right: 40px; }
+  .hero-bg { grid-column: 1; grid-row: 2; padding: 0 40px; }
+  .hero-img { max-height: none; }
+}
+@media (max-width: 768px) {
+  .hero-content { padding-left: 20px; padding-right: 20px; }
+  .hero-bg { padding: 0 20px; }
 }
 
 @media (max-width: 1024px) {
