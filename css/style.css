@@ -651,3 +651,76 @@ ul { list-style: none; }
   .whatsapp-float { width: 52px; height: 52px; bottom: 16px; right: 16px; }
   .whatsapp-float i { font-size: 28px; }
 }
+
+/* =============================================
+   ADDITIONAL COMPONENT SOURCING  (2026-11-15)
+   capabilities.html #sourcing + index.html teaser
+   只新增 class，不改任何已有规则，避免波及 hero / contact.html
+   ============================================= */
+/* 修 product-dev 五列网格的手机端横向溢出：原来用行内 style 写死 repeat(5,1fr)，
+   行内样式压过媒体查询，390px 视口被撑到 759px。改成 class + 响应式覆盖。 */
+.mini-services-5 { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1024px) { .mini-services-5 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px)  { .mini-services-5 { grid-template-columns: 1fr; } }
+
+/* .cap-section:nth-child(even) 会把偶数位区块刷成浅灰；这里用等特异性并后置，
+   强制白底，让 .sourcing-card 的浅灰卡片能显出来。 */
+.cap-section.sourcing-section { background: var(--white); }
+.sourcing-section .section-desc { max-width: 780px; }
+/* sticky 导航 72px + 顶栏，锚点跳转要留出偏移，否则标题被压在导航条下 */
+.cap-section { scroll-margin-top: 128px; }
+
+.sourcing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+.sourcing-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 30px 28px; transition: border-color .3s, box-shadow .3s, transform .3s;
+}
+.sourcing-card:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateY(-4px); }
+.sourcing-card h4 { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+.sourcing-card p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+.sourcing-examples {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding: 0 0 32px; margin-bottom: 36px; border-bottom: 1px solid var(--border);
+}
+.sourcing-examples-label { font-size: 13px; font-weight: 700; color: var(--gray-dark); margin-right: 6px; }
+.sourcing-chip {
+  display: inline-block; font-size: 12.5px; font-weight: 500; color: var(--gray-dark);
+  background: var(--bg); border: 1px solid var(--border); padding: 6px 13px; border-radius: 20px;
+}
+
+.sourcing-cta {
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  background: var(--bg); border-left: 4px solid var(--accent);
+  padding: 30px 34px; border-radius: 0 var(--radius) var(--radius) 0;
+}
+.sourcing-cta h3 { font-family: var(--font-head); font-size: 20px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+.sourcing-cta p { font-size: 14px; color: var(--gray); line-height: 1.65; max-width: 680px; }
+.sourcing-cta .btn { white-space: nowrap; flex-shrink: 0; }
+
+/* 首页服务区底部引流条（不塞进 4 列 mini-services，避免破坏网格） */
+.sourcing-teaser {
+  display: flex; align-items: center; gap: 20px; margin-top: 32px; padding: 22px 28px;
+  background: rgba(0,87,184,.045); border: 1px solid rgba(0,87,184,.16); border-radius: var(--radius);
+}
+.sourcing-teaser-icon {
+  width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px;
+  background: rgba(0,87,184,.1); color: var(--primary);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.sourcing-teaser-text { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.sourcing-teaser-text strong { font-size: 15px; font-weight: 700; color: var(--dark); }
+.sourcing-teaser-text span { font-size: 13.5px; color: var(--gray); line-height: 1.6; }
+.sourcing-teaser-link { flex-shrink: 0; font-size: 14px; font-weight: 700; color: var(--primary); }
+.sourcing-teaser-link:hover { color: var(--accent); }
+
+@media (max-width: 1024px) {
+  .sourcing-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .cap-section { scroll-margin-top: 118px; }
+  .sourcing-cta { flex-direction: column; align-items: flex-start; gap: 20px; padding: 26px 22px; }
+  .sourcing-teaser { flex-wrap: wrap; gap: 14px; padding: 20px; }
+  .sourcing-teaser-text { flex-basis: calc(100% - 64px); }
+  .sourcing-teaser-link { width: 100%; }
+}
